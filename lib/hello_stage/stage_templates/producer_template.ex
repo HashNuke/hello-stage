@@ -10,7 +10,7 @@ defmodule ProducerTemplate do
 
 
   def init(_start_args) do
-    initial_state = %SimpleDemandBuffer{}
+    initial_state = %DemandBuffer{}
     {:producer, initial_state}
   end
 
@@ -26,7 +26,7 @@ defmodule ProducerTemplate do
 
 
   def handle_call({:notify, new_events}, from, buffer) do
-    buffer = SimpleDemandBuffer.add_events(buffer, new_events)
+    buffer = DemandBuffer.add_events(buffer, new_events)
     GenStage.reply(from, :ok)
     dispatch_events(buffer)
   end
@@ -34,17 +34,13 @@ defmodule ProducerTemplate do
 
   def handle_demand(demand, buffer) do
     Logger.debug("#{__MODULE__} incoming demand: #{demand}")
-    buffer = SimpleDemandBuffer.register_demand(buffer, demand)
+    buffer = DemandBuffer.register_demand(buffer, demand)
     dispatch_events(buffer)
   end
 
 
   defp dispatch_events(buffer) do
-    if SimpleDemandBuffer.pending_demand?(buffer) do
-      {:ok, buffer, events} = SimpleDemandBuffer.get_pending_demand(buffer)
-      {:noreply, events, buffer}
-    else
-      {:noreply, [], buffer}
-    end
+    {:ok, buffer, events} = DemandBuffer.get_pending_demand(buffer)
+    {:noreply, events, buffer}
   end
 end

@@ -40,11 +40,7 @@ defmodule GoodProducerV2 do
 
 
   defp dispatch_events(buffer) do
-    if SimpleDemandBuffer.pending_demand?(buffer) do
-      {:ok, buffer, events} = SimpleDemandBuffer.get_pending_demand(buffer)
-      {:noreply, events, buffer}
-    else
-      {:noreply, [], buffer}
-    end
+    {:ok, buffer, events} = SimpleDemandBuffer.get_pending_demand(buffer)
+    {:noreply, events, buffer}
   end
 end
