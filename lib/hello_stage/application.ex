@@ -14,6 +14,28 @@ defmodule HelloStage.Application do
       supervisor(HelloStageWeb.Endpoint, []),
       # Start your own worker by calling: HelloStage.Worker.start_link(arg1, arg2, arg3)
       # worker(HelloStage.Worker, [arg1, arg2, arg3]),
+
+      worker(SimpleProducer, []),
+      worker(SimpleConsumer, []),
+
+      worker(ProducerWithDemandLimits, []),
+      worker(ConsumerWithDemandLimits, []),
+
+      worker(GoodProducer, []),
+      worker(GoodConsumer, []),
+
+      worker(GoodProducerV2, []),
+      worker(GoodConsumerV2, []),
+
+      worker(HNSearch.Producer, []),
+      worker(HNSearch.Consumer, []),
+
+      worker(BacklinkSearch.Producer, []),
+      worker(BacklinkSearch.Search, []),
+
+      worker(BacklinkSearchV2.Producer, []),
+      worker(BacklinkSearchV2.Search, []),
+      worker(BacklinkSearchV2.AddExtract, [])
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
