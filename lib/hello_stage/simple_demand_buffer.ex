@@ -1,7 +1,7 @@
 defmodule SimpleDemandBuffer do
   defstruct events: [], pending_demand: 0
 
-  def add_events(buffer, events) when is_list(events) do
+  def add_events(buffer, events) do
     new_events_list = buffer.events ++ events
     %__MODULE__{buffer | events: new_events_list}
   end
