@@ -15,13 +15,13 @@ defmodule SimpleProducer do
   end
 
 
-  def notify(new_event) do
-    GenStage.call(__MODULE__, {:notify, new_event})
+  def notify(events) do
+    GenStage.call(__MODULE__, {:notify, events})
   end
 
 
-  def handle_call({:notify, new_event}, _from, state) do
-    {:reply, :ok, [new_event], state}
+  def handle_call({:notify, events}, _from, state) do
+    {:reply, :ok, events, state}
   end
 
 

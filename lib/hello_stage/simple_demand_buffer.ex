@@ -22,8 +22,10 @@ defmodule SimpleDemandBuffer do
     {pending_events, new_events_list} = Enum.split(buffer.events, buffer.pending_demand)
     new_pending_demand = buffer.pending_demand - length(pending_events)
 
-    # Create new buffer
-    new_buffer = %__MODULE__{pending_demand: new_pending_demand, events: new_events_list}
-    {:ok, new_buffer, pending_events}
+    new_buffer = buffer
+    |> Map.put(:pending_demand, new_pending_demand)
+    |> Map.put(:events, new_events_list)
+
+    {pending_events, new_buffer}
   end
 end

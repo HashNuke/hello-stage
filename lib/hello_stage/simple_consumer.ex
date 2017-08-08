@@ -21,7 +21,7 @@ defmodule SimpleConsumer do
     # Process.sleep(3000)
 
     Enum.map(events, fn(event)->
-      Logger.info("Received: #{inspect event}")
+      Logger.info("#{__MODULE__} received: #{inspect event}")
     end)
 
     {:noreply, [], state}

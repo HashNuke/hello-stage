@@ -31,14 +31,15 @@ Enum.map(1..10, fn(i)-> SimpleProducer.notify("hello #{i}") end)
 ### Simple producer & consumer with demand limits
 
 ```
-ProducerWithDemandLimits.notify("hello")
-Enum.map(1..10, fn(i)-> ProducerWithDemandLimits.notify("hello #{i}") end)
+events = Enum.map(1..10, fn(i)-> "hello #{i}" end)
+SimpleProducer.notify(events)
 ```
 
 ### Good producer & consumer
 
 ```
-Enum.map(1..10, fn(i)-> GoodProducer.notify("hello #{i}") end)
+events = Enum.map(1..10, fn(i)-> "hello #{i}" end)
+GoodProducer.notify(events)
 ```
 
 ### HNSearch
