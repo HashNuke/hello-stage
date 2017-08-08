@@ -15,17 +15,21 @@ defmodule GoodProducer do
   end
 
 
-
-  def notify(new_event) do
-    GenStage.call(__MODULE__, {:notify, [new_event]})
+  def notify(events) do
+    GenStage.call(__MODULE__, {:notify, events})
   end
 
 
-  def handle_call({:notify, new_event}, _from, buffer) do
-    buffer = SimpleDemandBuffer.add_events(buffer, [new_event])
+  def handle_call({:notify, events}, _from, state) do
+    {:reply, :ok, events, state}
+  end
+
+
+  def handle_call({:notify, new_events}, _from, buffer) do
+    buffer = SimpleDemandBuffer.add_events(buffer, new_events)
 
     if SimpleDemandBuffer.pending_demand?(buffer) do
-      {:ok, buffer, events} = SimpleDemandBuffer.get_pending_demand(buffer)
+      {events, buffer} = SimpleDemandBuffer.get_pending_demand(buffer)
       {:reply, :ok, events, buffer}
     else
       {:reply, :ok, [], buffer}
@@ -38,7 +42,7 @@ defmodule GoodProducer do
     buffer = SimpleDemandBuffer.register_demand(buffer, demand)
 
     if SimpleDemandBuffer.pending_demand?(buffer) do
-      {:ok, buffer, events} = SimpleDemandBuffer.get_pending_demand(buffer)
+      {events, buffer} = SimpleDemandBuffer.get_pending_demand(buffer)
       {:noreply, events, buffer}
     else
       {:noreply, [], buffer}
