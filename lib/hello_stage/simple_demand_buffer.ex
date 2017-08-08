@@ -1,7 +1,7 @@
 defmodule SimpleDemandBuffer do
   defstruct events: [], pending_demand: 0
 
-  def add_events(buffer, events) when is_list(events) do
+  def add_events(buffer, events) do
     new_events_list = buffer.events ++ events
     %__MODULE__{buffer | events: new_events_list}
   end
@@ -23,7 +23,10 @@ defmodule SimpleDemandBuffer do
     new_pending_demand = buffer.pending_demand - length(pending_events)
 
     # Create new buffer
-    new_buffer = %__MODULE__{pending_demand: new_pending_demand, events: new_events_list}
+    new_buffer = buffer
+    |> Map.put(:pending_demand, new_pending_demand)
+    |> Map.put(:events, new_events_list)
+
     {:ok, new_buffer, pending_events}
   end
 end
