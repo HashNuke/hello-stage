@@ -27,6 +27,6 @@ defmodule SimpleDemandBuffer do
     |> Map.put(:pending_demand, new_pending_demand)
     |> Map.put(:events, new_events_list)
 
-    {:ok, new_buffer, pending_events}
+    {pending_events, new_buffer}
   end
 end
