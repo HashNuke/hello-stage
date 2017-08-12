@@ -20,11 +20,6 @@ defmodule ConsumerWithDemandLimits do
   def handle_events(events, _from, state) do
     Logger.info("Received: #{inspect events}")
 
-    # Print process mailbox to debug if required
-    # :erlang.process_info(self, :messages)
-    # |> inspect()
-    # |> Logger.info()
-
     # sleep for 3 seconds for fun
     Process.sleep(3000)
     {:noreply, [], state}
