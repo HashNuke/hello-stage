@@ -20,8 +20,17 @@ Enum.map(1..10, fn(i)-> SimpleProducer.notify("hello #{i}") end)
 
 ### Simple producer & consumer with demand limits
 
+Send 10 events
+
 ```
 events = Enum.map(1..10, fn(i)-> "hello #{i}" end)
+SimpleProducer.notify(events)
+```
+
+Send 20 events
+
+```
+events = Enum.map(1..20, fn(i)-> "hello #{i}" end)
 SimpleProducer.notify(events)
 ```
 
