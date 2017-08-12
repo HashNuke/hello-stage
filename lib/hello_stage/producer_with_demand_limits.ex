@@ -10,24 +10,25 @@ defmodule ProducerWithDemandLimits do
 
 
   def init(_start_args) do
-    initial_state = []
-    {:producer, initial_state}
+    initial_state = :dont_care
+    {:producer, initial_state, buffer_size: 10}
   end
 
 
-  def notify(new_event) do
-    GenStage.call(__MODULE__, {:notify, new_event})
+  def notify(new_events) do
+    GenStage.call(__MODULE__, {:notify, new_events})
   end
 
 
-  def handle_call({:notify, new_event}, _from, state) do
-    {:reply, :ok, [new_event], state}
+  def handle_call({:notify, new_events}, _from, state) do
+    {:reply, :ok, new_events, state}
   end
 
 
   def handle_demand(demand, state) when demand > 0 do
-    events_to_send = []
     Logger.info "#{__MODULE__} incoming demand: #{demand}"
+
+    events_to_send = []
     {:noreply, events_to_send, state}
   end
 end
